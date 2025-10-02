@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: CONFIG-SERVER
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/SapnaHS/Microservices-Demo
+server:
+  port: 9196

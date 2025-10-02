@@ -1,0 +1,41 @@
+server:
+  port: 8989
+spring:
+  application:
+    name: GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: http://localhost:9192
+          predicates:
+            - Path=/order/**
+          filters:
+            - AuthenticationFilter
+        - id: payment-service
+          uri: http://localhost:9191
+          predicates:
+            - Path=/payment/**
+          filters:
+            - AuthenticationFilter
+        - id: identity-service
+          uri: http://localhost:9193
+          predicates:
+            - Path=/auth/**
+      discovery:
+        enabled: true
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
